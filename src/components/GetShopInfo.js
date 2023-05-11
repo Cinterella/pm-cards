@@ -73,7 +73,7 @@ function GetShopInfo(props) {
                     action={ <IconButton aria-label="settings"></IconButton> }
                     title={ <strong style={{ textTransform:'uppercase' }}> {row[3]} </strong> }
                     subheader={ 'Pasillo: '+ row[1] +' - Puesto: '+row[2] }
-                    avatar={ <Avatar alt="" src={row[6]}></Avatar >}
+                    avatar={ <Avatar alt={row[4]+' '+row[5]} src={row[6]}></Avatar >}
                 />
                 <CardMedia
                     component="img"
@@ -87,13 +87,13 @@ function GetShopInfo(props) {
                   </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    { (row[9] === "") ? "" : <IconButton aria-label="whatsapp" href={row[9]}><WhatsAppIcon color="primary"/></IconButton> }
+                    { (row[9] === "") ? "" : <IconButton aria-label="whatsapp" href={'https://wa.me/'+row[9]} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
 
-                    { (row[7] === "") ? "" : <IconButton aria-label="instagram" href={row[7]}><Instagram color="primary"/></IconButton> }
+                    { (row[7] === "") ? "" : <IconButton aria-label="instagram" href={row[7]} target="_blank"><Instagram color="primary"/></IconButton> }
 
-                    { (row[8] === "") ? "" : <IconButton aria-label="facebook" href={row[8]}><Facebook color="primary"/></IconButton> }
+                    { (row[8] === "") ? "" : <IconButton aria-label="facebook" href={row[8]} target="_blank"><Facebook color="primary"/></IconButton> }
 
-                    { (row[10] === "") ? "" : <IconButton aria-label="web" href={row[10]}><LanguageIcon color="primary"/></IconButton> }
+                    { (row[10] === "") ? "" : <IconButton aria-label="web" href={row[10]} target="_blank"><LanguageIcon color="primary"/></IconButton> }
                 </CardActions>
 
               </Card>
