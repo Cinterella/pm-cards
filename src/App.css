@@ -28,6 +28,10 @@
   color: #61dafb;
 }
 
+.MuiPaper-root {
+  display: grid !important;
+}
+
 .css-46bh2p-MuiCardContent-root {
   min-height: 180px !important;
 }
