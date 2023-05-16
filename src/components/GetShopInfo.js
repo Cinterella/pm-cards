@@ -1,106 +1,156 @@
-import React from 'react';
-import { useEffect, useState } from "react";
-import { gapi } from "gapi-script";
-import config from "../config";
-import { styled } from '@mui/material/styles';
+import React, { useEffect, useState } from 'react';
+import Header from './Header'
+
+
+import { Card, CardHeader, CardActions, CardContent, Typography, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import Box from '@mui/joy/Box';
+import CardMedia from '@mui/material/CardMedia';
+import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Unstable_Grid2';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
+import IconButton from '@mui/material/IconButton';
 import LanguageIcon from '@mui/icons-material/Language';
 import { Instagram , Facebook } from '@mui/icons-material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+//import List from '@mui/joy/List';
+//import ListItem from '@mui/joy/ListItem';
+//import { StyledEngineProvider } from '@mui/joy/styles';
+//import ListItem from '@mui/joy/ListItem';
+//import { StyledEngineProvider, CssVarsProvider } from '@mui/joy/styles';
 
-
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-//import GetCategoty from './GetCategory'
-
-const APIKEY = global.config.credentials.apiKey;
-const SPREADSHEET_ID = global.config.credentials.spreadsheetId;
-const RANGE = global.config.credentials.ranges.puestos;
-
-function GetShopInfo(props) {
-  const [selectedOption, setSelectedOption] = useState("");
-  const [data, setData] = useState([]);
-  //const data = props.data;
-
-  const handleSelectChange = (event) => {
-    // Update the state with the selected option
-    setSelectedOption(event.target.value); 
-  };
-  let category = ""
+const GetShopingInfo = () => {
+  const [cards, setCards] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  //const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
-    // Load the Google API client library
-    gapi.load("client", () => {
-      gapi.client.init({
-        apiKey: APIKEY,
-        discoveryDocs: [
-          "https://sheets.googleapis.com/$discovery/rest?version=v4",
-        ]
-      });
+    const fetchSheetData = async () => {
+      try {
+        // Use the Google Sheets API to fetch the data from your spreadsheet
+        const response = await fetch(
+          'https://sheets.googleapis.com/v4/spreadsheets/1e0xqqss1LxOZdeQuR5IXRmsUu6tqgaEAH_2N00CgTfc/values/puestos!A2:P9?key=AIzaSyDOiY3PhAPrG00y5QCRtdRfFLjbMUZW2ic'
+        );
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch data from the spreadsheet.');
+        }
 
-      // Authenticate the user and load the spreadsheet data
-      gapi.client.load("sheets", "v4", () => {
-        gapi.client.sheets.spreadsheets.values
-          .get({
-            spreadsheetId: SPREADSHEET_ID,
-            range: RANGE,
-          })          
-          .then((response) => {
-            setData(response.result.values);
-          })
-          .catch((error) => {
-            console.log("Error loading data from Google Sheets:", error);
-          });
-      });
-    });    
+        const data = await response.json();
+
+        // Process the fetched data and transform it into the required format
+        const transformedData = data.values.map((row) => ({
+          //key	pasillo	local	nombre	categoria	detalle	icono	instagram	facebook	whatsapp	web	mail	imagen	description
+          key: row[0],
+          pasillo: row[1],
+          local: row[2],
+          nombre: row[3],
+          category: row[4],
+          detalle: row[5],
+          icono: row[6],
+          instagram: row[7],
+          facebook: row[8],
+          whatsapp: row[9],
+          web: row[10],
+          mail: row[11],
+          imagen: row[12],
+          description: row[13],
+        }));
+
+        setCards(transformedData);
+      } catch (error) {
+        console.error('Error fetching data from spreadsheet:', error);
+      }
+    };
+
+    fetchSheetData();
   }, []);
-  
-    return (
-        <Grid container justifyContent="center" rowSpacing={1} columnSpacing={{ xs: 2, sm: 3, md: 4 }}>
-            {data.map( (row, index) => (
-              <Card key={index} sx={{ maxWidth: 345, p: 0, m: 2 }}>
-                    
+
+  const handleCategoryChange = (event) => {
+    const category = event.target.name;
+    setSelectedCategories((prevSelectedCategories) => {
+      if (prevSelectedCategories.includes(category)) {
+        return prevSelectedCategories.filter((prevCategory) => prevCategory !== category);
+      } else {
+        return [...prevSelectedCategories, category];
+      }
+    });
+  };
+
+  const filteredCards = selectedCategories.length === 0
+    ? cards
+    : cards.filter((card) => selectedCategories.includes(card.category));
+
+  return (
+    <div>
+      <div className='fixed-header'>
+        <Header />
+        {/* Render your filter controls here */}
+        <FormGroup style={{backgroundColor: "#f3f3f3"}}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={3} sx={{ maxWidth: "900px", margin: "auto"}}>
+            <Grid xs={6} sm={4} md={3} display="flex">
+              <FormControlLabel
+                control={<Checkbox checked={selectedCategories.includes("Indumentaria")} onChange={handleCategoryChange} name="Indumentaria" />}
+                label="Indumentaria"
+              />
+            </Grid>
+            <Grid xs={6} sm={4} md={3} display="flex">
+              <FormControlLabel
+                control={<Checkbox checked={selectedCategories.includes("Otro")} onChange={handleCategoryChange} name="Otro" />}
+                label="Otro"
+              />
+            </Grid>
+            <Grid xs={6} sm={4} md={3} display="flex">
+              <FormControlLabel
+                control={<Checkbox checked={selectedCategories.includes("Varios")} onChange={handleCategoryChange} name="Varios" />}
+                label="Varios"
+              />
+            </Grid>
+            <Grid xs={6} sm={4} md={3} display="flex">
+              <FormControlLabel
+                control={<Checkbox checked={selectedCategories.includes("Infantil")} onChange={handleCategoryChange} name="Infantil" />}
+                label="Infantil"
+              />
+            </Grid>
+          </Grid>
+          </Box>
+        </FormGroup>
+        {/* ... */}
+      </div>
+
+      <div className="card-container">
+        <Grid container justifyContent="center" rowSpacing={.5} sx={{ maxWidth: "1490px", margin: "auto"}}>
+          {filteredCards.map((card, index) => (
+            <Grid key={index} xs={12} sm={6} md={4} display="flex">
+              <Card sx={{ maxWidth: 600, p: 0, m: 1 }}>
                 <CardHeader
-                    sx={ { fontWeight:'bold' } }
-                    action={ <IconButton aria-label="settings"></IconButton> }
-                    title={ <strong style={{ textTransform:'uppercase' }}> {row[3]} </strong> }
-                    subheader={ 'Pasillo: '+ row[1] +' - Puesto: '+row[2] }
-                    avatar={ <Avatar alt={row[4]+' '+row[5]} src={row[6]}></Avatar >}
+                  sx={ { fontWeight:'bold' } }
+                  title={ <strong style={{ textTransform:'uppercase' }} className="jaapokki"> {card.nombre} </strong> }
+                  subheader={ <p style={{ margin: 0 }}><span><strong>Pasillo:</strong> {card.pasillo}</span> - <span><strong>Local:</strong> {card.local}</span><br/><span>{card.category}</span></p> }
+                  avatar={ <Avatar alt={card.categoria} src={card.icono}></Avatar >}
                 />
                 <CardMedia
-                    component="img"
-                    height="200"
-                    image={row[12]}
-                    alt="Punta Mogote"
+                  component="img"
+                  height="200"
+                  image={card.imagen}
+                  alt="Punta Mogote {card.nombre}"
                 />
                 <CardContent>
-                  <Typography variant="body1" color="text.secondary">
-                      {row[13]}
-                  </Typography>
+                  <Typography variant="body1" style={{ fontSize: "14px", textAlign: "left justified"}}>{card.description}</Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    { (row[9] === "") ? "" : <IconButton aria-label="whatsapp" href={'https://wa.me/'+row[9]} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
-
-                    { (row[7] === "") ? "" : <IconButton aria-label="instagram" href={row[7]} target="_blank"><Instagram color="primary"/></IconButton> }
-
-                    { (row[8] === "") ? "" : <IconButton aria-label="facebook" href={row[8]} target="_blank"><Facebook color="primary"/></IconButton> }
-
-                    { (row[10] === "") ? "" : <IconButton aria-label="web" href={row[10]} target="_blank"><LanguageIcon color="primary"/></IconButton> }
+                  { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://wa.me/"+card.whatsapp} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
+                  { (card.instagram === "") ? "" : <IconButton aria-label="instagram" href={card.instagram} target="_blank"><Instagram color="primary"/></IconButton> }
+                  { (card.facebook === "") ? "" : <IconButton aria-label="facebook" href={card.facebook} target="_blank"><Facebook color="primary"/></IconButton> }
+                  { (card.web === "") ? "" : <IconButton aria-label="web" href={card.web} target="_blank"><LanguageIcon color="primary"/></IconButton> }
                 </CardActions>
 
               </Card>
-            )
-            )}
+            </Grid>
+          ))}
         </Grid>
-    );
-}
+      </div>
+    </div>
+  );
+};
 
-export default GetShopInfo;
+export default GetShopingInfo;
