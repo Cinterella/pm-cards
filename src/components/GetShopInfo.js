@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Header from './Header'
+import PropTypes from 'prop-types';
+//import Header from './Header'
 
+import { styled, useTheme } from '@mui/material/styles';
 
 import { Card, CardHeader, CardActions, CardContent, Typography, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import Box from '@mui/joy/Box';
@@ -11,16 +13,99 @@ import IconButton from '@mui/material/IconButton';
 import LanguageIcon from '@mui/icons-material/Language';
 import { Instagram , Facebook } from '@mui/icons-material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+
+
+
+
 //import List from '@mui/joy/List';
 //import ListItem from '@mui/joy/ListItem';
 //import { StyledEngineProvider } from '@mui/joy/styles';
 //import ListItem from '@mui/joy/ListItem';
 //import { StyledEngineProvider, CssVarsProvider } from '@mui/joy/styles';
+//import AppBar from '@mui/material/AppBar';
+import MuiAppBar from '@mui/material/AppBar';
+//import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
+import List from '@mui/material/List';
+//import ListItem from '@mui/material/ListItem';
+//import ListItemButton from '@mui/material/ListItemButton';
+//import ListItemIcon from '@mui/material/ListItemIcon';
+
+
+//import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+//import LocalMallIcon from '@mui/icons-material/LocalMall';
+//import ListItemText from '@mui/material/ListItemText';
+
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+const drawerWidth = 240;
+
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    }),
+  }),
+);
+
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: 'flex-end',
+}));
 
 const GetShopingInfo = () => {
   const [cards, setCards] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  //const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const fetchSheetData = async () => {
@@ -83,84 +168,126 @@ const GetShopingInfo = () => {
 
   return (
     <div>
-      <div className='fixed-header'>
+     {/*  <div className='fixed-header'>
         <Header />
         
-      </div>
+      </div> */}
 
       <div className="card-container">
         {/* Render your filter controls here */}
-        <FormGroup style={{backgroundColor: "#f3f3f3"}}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={3} sx={{ maxWidth: "900px", margin: "auto"}}>
-            <Grid xs={6} sm={4} md={3} display="flex">
-              <FormControlLabel
-                control={<Checkbox checked={selectedCategories.includes("Infantil")} onChange={handleCategoryChange} name="Infantil" />}
-                label="Infantil"
-              />
-            </Grid>
-            <Grid xs={6} sm={4} md={3} display="flex">
-              <FormControlLabel
-                control={<Checkbox checked={selectedCategories.includes("Indumentaria")} onChange={handleCategoryChange} name="Indumentaria" />}
-                label="Indumentaria"
-              />
-            </Grid>
-            <Grid xs={6} sm={4} md={3} display="flex">
-              <FormControlLabel
-                control={<Checkbox checked={selectedCategories.includes("Indumentaria Unisex")} onChange={handleCategoryChange} name="Indumentaria Unisex" />}
-                label="Indumentaria Unisex"
-              />
-            </Grid>
-            <Grid xs={6} sm={4} md={3} display="flex">
-              <FormControlLabel
-                control={<Checkbox checked={selectedCategories.includes("Cigarrillos")} onChange={handleCategoryChange} name="Cigarrillos" />}
-                label="Cigarrillos"
-              />
-            </Grid>
-            <Grid xs={6} sm={4} md={3} display="flex">
-              <FormControlLabel
-                control={<Checkbox checked={selectedCategories.includes("Juguetería")} onChange={handleCategoryChange} name="Juguetería" />}
-                label="Juguetería"
-              />
-            </Grid>
-          </Grid>
-          </Box>
-        </FormGroup>
+
+
+        <Box sx={{ display: 'flex' }}>
+          <CssBaseline />
+          {/* <Box
+            component="nav"
+            sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 10 } }}
+            aria-label="mailbox folders"
+          > */}
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <AppBar position="fixed" open={open}>
+            <Toolbar>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{ mr: 2, ...(open && { display: 'none' }) }}
+              >
+              <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" noWrap component="div">
+                Nuestros Puestos
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            sx={{
+              width: drawerWidth,
+              flexShrink: 0,
+              '& .MuiDrawer-paper': {
+                width: drawerWidth,
+                boxSizing: 'border-box',
+              },
+            }}
+            variant="persistent"
+            anchor="left"
+            open={open}
+          >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            <Typography variant="h6" noWrap component="div">
+              Categorías
+            </Typography>
+          </List>
+          <List>
+            {['Indumentaria Femenina','Indumentaria Masculina','Indumentaria Unisex', 'Indumentaria Escolar', 'Indumentaria Infantil', 'Accesorios', 'Seguridad', 'Cigarrillos'].map((text, index) => (
+              <FormGroup style={{backgroundColor: "#f3f3f3", padding: "0 0 0 10px"}}>
+                <FormControlLabel
+                  key= {index}
+                  control={<Checkbox checked={selectedCategories.includes(text)} 
+                  onChange={handleCategoryChange} name={text} />}
+                  label={text}
+                />
+            </FormGroup>
+            ))}
+          </List>
+        </Drawer>
+        
         {/* ... */}
+        <Main open={open}>
+          <Grid container justifyContent="center" rowSpacing={.5} sx={{ maxWidth: "1490px", margin: "auto"}}>
+            {filteredCards.map((card, index) => (
+              <Grid key={index} xs={12} sm={6} md={4} display="flex">
+                <Card sx={{ maxWidth: 600, p: 0, m: 1 }}>
+                  <CardHeader
+                    sx={ { fontWeight:'bold' } }
+                    title={ <strong style={{ textTransform:'uppercase' }} className="jaapokki"> {card.nombre} </strong> }
+                    subheader={ <p style={{ margin: 0 }}><span><strong>Pasillo:</strong> {card.pasillo}</span> - <span><strong>Local:</strong> {card.local}</span><br/><span>{card.category}</span></p> }
+                    avatar={ <Avatar alt={card.categoria} src={card.icono}></Avatar >}
+                  />
+                  <CardMedia
+                    component="img"
+                    height="200"
+                    image={card.imagen}
+                    alt="Punta Mogote"
+                  />
+                  <CardContent>
+                    <Typography variant="body1" style={{ fontSize: "14px", textAlign: "left justified"}}>{card.description}</Typography>
+                  </CardContent>
+                  <CardActions disableSpacing>
+                    { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://wa.me/"+card.whatsapp} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
+                    { (card.instagram === "") ? "" : <IconButton aria-label="instagram" href={"https://www.instagram.com/"+card.instagram} target="_blank"><Instagram color="primary"/></IconButton> }
+                    { (card.facebook === "") ? "" : <IconButton aria-label="facebook" href={"https://www.facebook.com/"+card.facebook} target="_blank"><Facebook color="primary"/></IconButton> }
+                    { (card.web === "") ? "" : <IconButton aria-label="web" href={card.web} target="_blank"><LanguageIcon color="primary"/></IconButton> }
+                  </CardActions>
 
-        <Grid container justifyContent="center" rowSpacing={.5} sx={{ maxWidth: "1490px", margin: "auto"}}>
-          {filteredCards.map((card, index) => (
-            <Grid key={index} xs={12} sm={6} md={4} display="flex">
-              <Card sx={{ maxWidth: 600, p: 0, m: 1 }}>
-                <CardHeader
-                  sx={ { fontWeight:'bold' } }
-                  title={ <strong style={{ textTransform:'uppercase' }} className="jaapokki"> {card.nombre} </strong> }
-                  subheader={ <p style={{ margin: 0 }}><span><strong>Pasillo:</strong> {card.pasillo}</span> - <span><strong>Local:</strong> {card.local}</span><br/><span>{card.category}</span></p> }
-                  avatar={ <Avatar alt={card.categoria} src={card.icono}></Avatar >}
-                />
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={card.imagen}
-                  alt="Punta Mogote"
-                />
-                <CardContent>
-                  <Typography variant="body1" style={{ fontSize: "14px", textAlign: "left justified"}}>{card.description}</Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                  { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://wa.me/"+card.whatsapp} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
-                  { (card.instagram === "") ? "" : <IconButton aria-label="instagram" href={"https://www.instagram.com/"+card.instagram} target="_blank"><Instagram color="primary"/></IconButton> }
-                  { (card.facebook === "") ? "" : <IconButton aria-label="facebook" href={"https://www.facebook.com/"+card.facebook} target="_blank"><Facebook color="primary"/></IconButton> }
-                  { (card.web === "") ? "" : <IconButton aria-label="web" href={card.web} target="_blank"><LanguageIcon color="primary"/></IconButton> }
-                </CardActions>
-
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Main>
+        </Box>
       </div>
+
     </div>
   );
 };
+
+
+GetShopingInfo.propTypes = {
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
+};
+
+
 
 export default GetShopingInfo;

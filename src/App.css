@@ -26,7 +26,7 @@ h1 {
 }
 
 .card-container {
-  padding-top: 270px;
+  padding-top: 100px;
 }
 
 @media screen and (min-width: 993px){
@@ -34,10 +34,6 @@ h1 {
     background: rgba(255, 255, 255, 0.97);
     border-color: rgba(0, 0, 0, 0.04);
   }
-  .card-container {
-    padding-top: 180px;
-  }
-
 }
 .App {
   text-align: center;
@@ -76,10 +72,6 @@ h1 {
 
 .App-link {
   color: #61dafb;
-}
-
-.MuiPaper-root {
-  display: grid !important;
 }
 
 .MuiCardContent-root {
