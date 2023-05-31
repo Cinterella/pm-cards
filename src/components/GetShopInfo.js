@@ -26,8 +26,10 @@ const GetShopingInfo = () => {
     const fetchSheetData = async () => {
       try {
         // Use the Google Sheets API to fetch the data from your spreadsheet
+        //apiKey: "AIzaSyAIxeepIrQjzBOW23khBcC8SltbHGxQFPQ",
+        //spreadsheetId: "1aw-hW9nUVYyeL02lei1FoO7SxFKIOPgU5ovDQaMC5wk",
         const response = await fetch(
-          'https://sheets.googleapis.com/v4/spreadsheets/1e0xqqss1LxOZdeQuR5IXRmsUu6tqgaEAH_2N00CgTfc/values/puestos!A2:P9?key=AIzaSyDOiY3PhAPrG00y5QCRtdRfFLjbMUZW2ic'
+          'https://sheets.googleapis.com/v4/spreadsheets/1aw-hW9nUVYyeL02lei1FoO7SxFKIOPgU5ovDQaMC5wk/values/puestos!A2:P200?key=AIzaSyAIxeepIrQjzBOW23khBcC8SltbHGxQFPQ'
         );
         
         if (!response.ok) {
@@ -83,10 +85,20 @@ const GetShopingInfo = () => {
     <div>
       <div className='fixed-header'>
         <Header />
+        
+      </div>
+
+      <div className="card-container">
         {/* Render your filter controls here */}
         <FormGroup style={{backgroundColor: "#f3f3f3"}}>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={3} sx={{ maxWidth: "900px", margin: "auto"}}>
+            <Grid xs={6} sm={4} md={3} display="flex">
+              <FormControlLabel
+                control={<Checkbox checked={selectedCategories.includes("Infantil")} onChange={handleCategoryChange} name="Infantil" />}
+                label="Infantil"
+              />
+            </Grid>
             <Grid xs={6} sm={4} md={3} display="flex">
               <FormControlLabel
                 control={<Checkbox checked={selectedCategories.includes("Indumentaria")} onChange={handleCategoryChange} name="Indumentaria" />}
@@ -95,29 +107,27 @@ const GetShopingInfo = () => {
             </Grid>
             <Grid xs={6} sm={4} md={3} display="flex">
               <FormControlLabel
-                control={<Checkbox checked={selectedCategories.includes("Otro")} onChange={handleCategoryChange} name="Otro" />}
-                label="Otro"
+                control={<Checkbox checked={selectedCategories.includes("Indumentaria Unisex")} onChange={handleCategoryChange} name="Indumentaria Unisex" />}
+                label="Indumentaria Unisex"
               />
             </Grid>
             <Grid xs={6} sm={4} md={3} display="flex">
               <FormControlLabel
-                control={<Checkbox checked={selectedCategories.includes("Varios")} onChange={handleCategoryChange} name="Varios" />}
-                label="Varios"
+                control={<Checkbox checked={selectedCategories.includes("Cigarrillos")} onChange={handleCategoryChange} name="Cigarrillos" />}
+                label="Cigarrillos"
               />
             </Grid>
             <Grid xs={6} sm={4} md={3} display="flex">
               <FormControlLabel
-                control={<Checkbox checked={selectedCategories.includes("Infantil")} onChange={handleCategoryChange} name="Infantil" />}
-                label="Infantil"
+                control={<Checkbox checked={selectedCategories.includes("Juguetería")} onChange={handleCategoryChange} name="Juguetería" />}
+                label="Juguetería"
               />
             </Grid>
           </Grid>
           </Box>
         </FormGroup>
         {/* ... */}
-      </div>
 
-      <div className="card-container">
         <Grid container justifyContent="center" rowSpacing={.5} sx={{ maxWidth: "1490px", margin: "auto"}}>
           {filteredCards.map((card, index) => (
             <Grid key={index} xs={12} sm={6} md={4} display="flex">
@@ -132,15 +142,15 @@ const GetShopingInfo = () => {
                   component="img"
                   height="200"
                   image={card.imagen}
-                  alt="Punta Mogote {card.nombre}"
+                  alt="Punta Mogote"
                 />
                 <CardContent>
                   <Typography variant="body1" style={{ fontSize: "14px", textAlign: "left justified"}}>{card.description}</Typography>
                 </CardContent>
                 <CardActions disableSpacing>
                   { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://wa.me/"+card.whatsapp} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
-                  { (card.instagram === "") ? "" : <IconButton aria-label="instagram" href={card.instagram} target="_blank"><Instagram color="primary"/></IconButton> }
-                  { (card.facebook === "") ? "" : <IconButton aria-label="facebook" href={card.facebook} target="_blank"><Facebook color="primary"/></IconButton> }
+                  { (card.instagram === "") ? "" : <IconButton aria-label="instagram" href={"https://www.instagram.com/"+card.instagram} target="_blank"><Instagram color="primary"/></IconButton> }
+                  { (card.facebook === "") ? "" : <IconButton aria-label="facebook" href={"https://www.facebook.com/"+card.facebook} target="_blank"><Facebook color="primary"/></IconButton> }
                   { (card.web === "") ? "" : <IconButton aria-label="web" href={card.web} target="_blank"><LanguageIcon color="primary"/></IconButton> }
                 </CardActions>
 

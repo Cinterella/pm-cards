@@ -1,13 +1,13 @@
 module.exports = global.config = {
     credentials: {
-        apiKey: "AIzaSyDOiY3PhAPrG00y5QCRtdRfFLjbMUZW2ic",
-        spreadsheetId: "1e0xqqss1LxOZdeQuR5IXRmsUu6tqgaEAH_2N00CgTfc",
+        apiKey: "AIzaSyAIxeepIrQjzBOW23khBcC8SltbHGxQFPQ",
+        spreadsheetId: "1aw-hW9nUVYyeL02lei1FoO7SxFKIOPgU5ovDQaMC5wk",
         ranges: {
-            puestos: "puestos!A2:P9"
+            puestos: "puestos!A2:P8"
         }
     },
     alerts: {
-        getGlassPriceAlert: false
+        
     },
     widths: {
         input: '100%',
