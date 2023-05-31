@@ -54,7 +54,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
+    marginLeft: `0px`,
     ...(open && {
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
@@ -177,7 +177,7 @@ const GetShopingInfo = () => {
         {/* Render your filter controls here */}
 
 
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ }}>
           <CssBaseline />
           {/* <Box
             component="nav"
@@ -226,10 +226,9 @@ const GetShopingInfo = () => {
             </Typography>
           </List>
           <List>
-            {['Indumentaria Femenina','Indumentaria Masculina','Indumentaria Unisex', 'Indumentaria Escolar', 'Indumentaria Infantil', 'Accesorios', 'Seguridad', 'Cigarrillos'].map((text, index) => (
-              <FormGroup style={{backgroundColor: "#f3f3f3", padding: "0 0 0 10px"}}>
+            {['Indumentaria Deportiva', 'Indumentaria Femenina','Indumentaria Masculina','Indumentaria Unisex', 'Indumentaria Escolar', 'Indumentaria Infantil', 'Calzado', 'Accesorios', 'Seguridad', 'Cigarrillos'].map((text, index) => (
+              <FormGroup key={index} style={{backgroundColor: "#f3f3f3", padding: "0 0 0 10px"}}>
                 <FormControlLabel
-                  key= {index}
                   control={<Checkbox checked={selectedCategories.includes(text)} 
                   onChange={handleCategoryChange} name={text} />}
                   label={text}
@@ -240,7 +239,7 @@ const GetShopingInfo = () => {
         </Drawer>
         
         {/* ... */}
-        <Main open={open}>
+        <Main>
           <Grid container justifyContent="center" rowSpacing={.5} sx={{ maxWidth: "1490px", margin: "auto"}}>
             {filteredCards.map((card, index) => (
               <Grid key={index} xs={12} sm={6} md={4} display="flex">
