@@ -226,7 +226,7 @@ const GetShopingInfo = () => {
         <Main>
           <Grid container justifyContent="center" rowSpacing={.5} sx={{ maxWidth: "1490px", margin: "auto"}}>
             {filteredCards.map((card, index) => (
-              <Grid key={index} xs={12} sm={6} md={4} display="flex">
+              <Grid key={index} xs={12} sm={6} md={4}>
                 <Card sx={{ maxWidth: 600, p: 0, m: 1 }}>
                   <CardHeader
                     sx={ { fontWeight:'bold' } }
