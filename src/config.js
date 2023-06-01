@@ -2,9 +2,7 @@ module.exports = global.config = {
     credentials: {
         apiKey: "AIzaSyAIxeepIrQjzBOW23khBcC8SltbHGxQFPQ",
         spreadsheetId: "1aw-hW9nUVYyeL02lei1FoO7SxFKIOPgU5ovDQaMC5wk",
-        ranges: {
-            puestos: "puestos!A2:P8"
-        }
+        range: "puestos!A2:P200" 
     },
     alerts: {
         

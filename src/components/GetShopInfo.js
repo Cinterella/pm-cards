@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 //import Header from './Header'
+import config from '../config';
 
 import { styled, useTheme } from '@mui/material/styles';
-
 import { Card, CardHeader, CardActions, CardContent, Typography, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import Box from '@mui/joy/Box';
 import CardMedia from '@mui/material/CardMedia';
@@ -13,37 +13,21 @@ import IconButton from '@mui/material/IconButton';
 import LanguageIcon from '@mui/icons-material/Language';
 import { Instagram , Facebook } from '@mui/icons-material';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-
-
-
-
-//import List from '@mui/joy/List';
-//import ListItem from '@mui/joy/ListItem';
-//import { StyledEngineProvider } from '@mui/joy/styles';
-//import ListItem from '@mui/joy/ListItem';
-//import { StyledEngineProvider, CssVarsProvider } from '@mui/joy/styles';
-//import AppBar from '@mui/material/AppBar';
 import MuiAppBar from '@mui/material/AppBar';
-//import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
 import List from '@mui/material/List';
-//import ListItem from '@mui/material/ListItem';
-//import ListItemButton from '@mui/material/ListItemButton';
-//import ListItemIcon from '@mui/material/ListItemIcon';
-
-
-//import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-//import LocalMallIcon from '@mui/icons-material/LocalMall';
-//import ListItemText from '@mui/material/ListItemText';
-
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
+
+
+const APIKEY = global.config.credentials.apiKey;
+const SPREADSHEETID = global.config.credentials.spreadsheetId;
+const RANGE = global.config.credentials.range;
+
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -64,7 +48,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     }),
   }),
 );
-
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -113,8 +96,9 @@ const GetShopingInfo = () => {
         // Use the Google Sheets API to fetch the data from your spreadsheet
         //apiKey: "AIzaSyAIxeepIrQjzBOW23khBcC8SltbHGxQFPQ",
         //spreadsheetId: "1aw-hW9nUVYyeL02lei1FoO7SxFKIOPgU5ovDQaMC5wk",
+        //range: "puestos!A2:P8"
         const response = await fetch(
-          'https://sheets.googleapis.com/v4/spreadsheets/1aw-hW9nUVYyeL02lei1FoO7SxFKIOPgU5ovDQaMC5wk/values/puestos!A2:P200?key=AIzaSyAIxeepIrQjzBOW23khBcC8SltbHGxQFPQ'
+          "https://sheets.googleapis.com/v4/spreadsheets/"+SPREADSHEETID+"/values/"+RANGE+"?key="+APIKEY
         );
         
         if (!response.ok) {
@@ -260,7 +244,7 @@ const GetShopingInfo = () => {
                     <Typography variant="body1" style={{ fontSize: "14px", textAlign: "left justified"}}>{card.description}</Typography>
                   </CardContent>
                   <CardActions disableSpacing>
-                    { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://wa.me/"+card.whatsapp} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
+                    { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://api.whatsapp.com/send?phone="+card.whatsapp} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
                     { (card.instagram === "") ? "" : <IconButton aria-label="instagram" href={"https://www.instagram.com/"+card.instagram} target="_blank"><Instagram color="primary"/></IconButton> }
                     { (card.facebook === "") ? "" : <IconButton aria-label="facebook" href={"https://www.facebook.com/"+card.facebook} target="_blank"><Facebook color="primary"/></IconButton> }
                     { (card.web === "") ? "" : <IconButton aria-label="web" href={card.web} target="_blank"><LanguageIcon color="primary"/></IconButton> }
