@@ -244,7 +244,7 @@ const GetShopingInfo = () => {
                     <Typography variant="body1" style={{ fontSize: "14px", textAlign: "left justified"}}>{card.description}</Typography>
                   </CardContent>
                   <CardActions disableSpacing>
-                    { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://api.whatsapp.com/send?phone="+card.whatsapp} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
+                    { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://api.whatsapp.com/send?phone="+card.whatsapp+"&text=Hola, te escribo desde sitio web de Punta Mogote. "} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
                     { (card.instagram === "") ? "" : <IconButton aria-label="instagram" href={"https://www.instagram.com/"+card.instagram} target="_blank"><Instagram color="primary"/></IconButton> }
                     { (card.facebook === "") ? "" : <IconButton aria-label="facebook" href={"https://www.facebook.com/"+card.facebook} target="_blank"><Facebook color="primary"/></IconButton> }
                     { (card.web === "") ? "" : <IconButton aria-label="web" href={card.web} target="_blank"><LanguageIcon color="primary"/></IconButton> }
