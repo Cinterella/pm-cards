@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+//import PropTypes from 'prop-types';
 //import Header from './Header'
 import config from '../config';
 
@@ -137,6 +137,9 @@ const GetShopingInfo = () => {
 
   const handleCategoryChange = (event) => {
     const category = event.target.name;
+
+//    const lines = {card.category}.split('\n');
+
     setSelectedCategories((prevSelectedCategories) => {
       if (prevSelectedCategories.includes(category)) {
         return prevSelectedCategories.filter((prevCategory) => prevCategory !== category);
@@ -146,11 +149,16 @@ const GetShopingInfo = () => {
     });
   };
 
+  
   const filteredCards = selectedCategories.length === 0
-    ? cards
-    : cards.filter((card) => selectedCategories.includes(card.category));
-
+  ? cards
+  : cards.filter((card) => selectedCategories.includes(card.category));
+  
+  
+  
+  
   return (
+
     <div>
      {/*  <div className='fixed-header'>
         <Header />
@@ -241,7 +249,9 @@ const GetShopingInfo = () => {
                     alt="Punta Mogote"
                   />
                   <CardContent>
-                    <Typography variant="body1" style={{ fontSize: "14px", textAlign: "left justified"}}>{card.description}</Typography>
+                    <Typography className='description' variant="body1" style={{ fontSize: "14px", textAlign: "left justified", whiteSpace: 'pre-line'}}>
+                      {card.description}
+                    </Typography>
                   </CardContent>
                   <CardActions disableSpacing>
                     { (card.whatsapp === "") ? "" : <IconButton aria-label="whatsapp" href={"https://api.whatsapp.com/send?phone="+card.whatsapp+"&text=Hola, te escribo desde sitio web de Punta Mogote. "} target="_blank"><WhatsAppIcon color="primary"/></IconButton> }
@@ -261,16 +271,5 @@ const GetShopingInfo = () => {
     </div>
   );
 };
-
-
-GetShopingInfo.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
-
-
 
 export default GetShopingInfo;
